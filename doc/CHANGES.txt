@@ -1,0 +1,219 @@
+CHANGES
+-------
+
+
+0.3.1
+-----
+This release completes the integration into standard logging, changes the project folder structure and the license.
+(License switched to MIT. Simply looks simpler than BSD.)
+- Bugfixes:
+  - calls with standard logging did not translate the logging.LEVEL into a rrlog category (like "E") 
+- Features:
+  - integration into standard logging supports now: separate arguments which are later merged into the message string
+
+
+0.3.0
+-----
+This release brings performant remote logging over TCP sockets without xmlrpc, and slightly improved email notification.
+Backwards compatibility is broken; mainly because the archiver functionality is removed.
+There is a "simplejson" package (MIT License) included as a fallback for old Python versions (2.5 and older).
+With newer Python versions, the bundled simplejson could be safely removed.
+Details:
+- Bugfixes:
+  - Documentation: missing statement that the integration of the standard logging is incomplete
+    (that's not improved yet, but documented)
+- Features:
+  - fast remote logging with the new socket modules.
+    This is comparable to the SocketHandler way of Pyton standard logging
+  - Mail module: Allows custom mail contents formatting and custom subject
+  - Mail module: Parameter added for SMTP mail notification: supports SMTP servers with a login name different from "from_address"
+  - Documentation switched from epydoc to sphinx.  
+- Removed:
+  - The archiver functionality (for both files and database) is removed.
+    The archivers would have required a fix because of other changes (the unique client id of remote logging was removed).
+    We preferred to drop archivers completely instead. (In favour of later extracting messages from the
+    logs, with simple shell scripts -- that seems more flexible and robust.)
+- API Changes:
+  - Python 2.3 support is skipped (mainly because of the json usage for remote logging.)
+	Minimum Python version is 2.4 now. Some features may still work with 2.3 but this is not tested.
+  - XMLRPC: For security reasons, the XMLRPC remote logging uses the json serializer per default now. This will affect
+    any customization which sent arbitrary objects instead of pythons standard data types.
+    If you should be biten here, see the XMLRPC section in the manual for how to solve that.
+  - XMLRPC: default port changed to 9801; module variable is 'DEFAULTPORT_XMLRPC' now instead 'DEFAULT_TCP_PORT'
+  - XMLRPC: startServer() method signature changed, argument order is 'host' before 'ports' for consistency
+  - remote logging: message timestamps are taken at client(application) side for accuracy (was on server side before)
+  - removed two minor LogServer.__init__ parameters (oie and initMsg).
+    (oie parameter is replaced by another way to handle log internal errors, see below)
+  - log internal warnings use the warnings module now
+    Optionally, one or more writers can be explicitly assigned to log such internal errors (replaces "oie" parameter)
+  - the "client id" which was assigned by the log server to any client, is replaced by
+    the triple: client pid/threadname/threadid.
+    This eliminates bidirectional data transfer we had before, and simplifies Client-Server reconnection.
+  - Mail module:
+    Some method names and signatures have changed. create_observer_smtp() is deprecated; use mailnotifier() instead.
+  - Log.__init__: The long-deprecated "on" argument is removed
+- Deprecated:
+  - Log.__call__: Custom "ad-hoc" kwargs are deprecated, in favour of the "special" argument
+  Hint: Python2.7 hides DeprecationWarnings by default (!) See http://docs.python.org/2/library/warnings.html#default-warning-filters
+
+
+
+0.2.3
+-----
+This release is for compatibility with the latest SQLAlchemy (v0.6.0).
+There's no need to upgrade from v0.2.2 if you don't use database logging.
+Details:
+- Fixed InvalidRequestError with SQLAlchemy v0.6.0
+- database logging features enabled in the experimental Python3 version (lib3k/ directory)
+
+
+
+0.2.2
+-----
+This release brings bugfixes in observer handling and xmlrpc logging, and adds mail notifications.
+Details:
+- module for Mail notifications added (currently, via SMTP server only)
+  (Sends EMail summaries when messages of defined categories appear.) 
+- Bugfixes:
+  - marshal error in XMLRPC logging when the callers function name could not be detected (critical/since v0.2.1)
+  - handling of internal errors in custom observers/filters fixed
+  - observer API behaves like documented in pydoc now (i.e.both __call__() and observe() methods are recognized)
+- Minor additions:
+  - added a second standard timestamp format "std2" which contains month/day 
+    (Note: custom strftime formats are always possible)
+  - the archiver create... functions take optional observer/filter arguments now
+    (intended to cascade observers, e.g. to send a mail when messages are archived)
+  - the xmlrpc client create... function takes the "extractStack" parameter to switch off stack extraction
+
+
+
+0.2.1
+-----
+This release brings database-archiver bugfixes, more debug information, unified formatting methods, 
+a speed improvement, deprecation of legacy code and a revised & extended manual. 
+Details:
+- Logged tracebacks contain the callers function name (additionally to filename & line number)
+- The log client process id is by default now in the logged data
+- new log creation parameter: "extractStack=False" can double performance (but disable any stack related functionality, e.g.line indention) 
+- Bugfixes:
+  - the "problem_id" of the DB Table Archiver wasn't unique per triggering message but the name ("id") suggested that, 
+    which was considered to be a bug. Now it is unique as expected. Additionally, it is renamed 
+    to "trigger_id" since it behaves different (it's based on process ids now.)
+  - When using the combination of:Archiving Tool,Database Logging,activated Meta Table and 
+    non-remote logging with multiple processes, writing the meta table failed with Integrity Errors, 
+    resulting in annoying "Internal Error" messages in both the main log and the archive table.
+- API changes / Deprecation:
+  - Archiver: the "problem_id" is replaced by a "trigger_id" which is unique because based on process ids
+  - the "seFilesExclude" parameter behaves different for the sake of consistency now,
+    it is applied to all stacktrace items (before, the first one was treated special and could not be hidden)    
+  - getFormattedDict() method is deprecated in favour of a new _format_dict method in the DBLogWriter,
+    analogous to the way we already format files and stdout. Also analogous, a simple callable
+    (format_dict) can be provided to the server which does custom formatting of each table field.
+- minor behaviour changes:
+  - timestamps are activated per default in filewriter.createRotatingServer (before: tsFormat was None by default)
+  - modified the default text line format 
+
+
+0.2.0
+-----
+This release brings minor bugfixes,full column configuration,
+some Deprecations and a step towards Python3.
+Details: 
+- DB columns can be fully configured; you may add/remove/re-order columns,
+  and define columns to be primary keys, change max size of string columns etc.
+- nicer stackpath formatting, e.g. dots indicate omitted file names  
+- Bugfixes:
+  - Report of internal logging errors (which occurred with Python3.0) do not fail anymore
+    with "Error while reporting an internal error"
+  - the default "seFilesExclude" implementation now also takes effect with Python 
+    installations where "logging/__init__.py" is preceded by an absolute path 
+- API changes / Deprecation:
+  - Archiving tool: Anything in the deprecated "probarch_sa" module raises
+    DeprecationWarning, requesting to use the "catarch_dbsa" module instead.
+  - the createColumns() method requires an argument 
+    (since the way to configure custom columns has changed.)
+- minor behaviour changes:
+  - custom line formatting method for print-output need to add the linebreak "\n" 
+    by themselves (analogous to file lines).     
+- Python3 preparations:
+  - experimental Python3 version added (without DB-logging support;
+    DB logging with Python3 has to wait for
+    Python3-SQLAlchemy (and MySQLdb for MySQL users.)) 
+  - all non-DB-related tests pass with Python2.6 now
+  - all tests pass with nosetest, too, since py.test
+    is not expected to get Python3 compatible near-term.
+
+
+0.1.5
+-----
+- filter mechanism added
+- added a filter to indent messages by stack depth (visualizes the call hierarchy)
+- logging to stdout added (analogous to file logging)
+- minor behavior changes:
+  - text file logging: When stack logging is switched off (stackMax=0), the annoying
+    linenumber/filename placeholders ("-1"/"-off-") are supressed
+  - rotation is lazy (i.e.no empty next file/table is waiting for its first message)
+  - database logging: The "path" column has the complete path, 
+    i.e.the cfn/cln columns get redundant.
+- API changes:
+  - file logging: The "linenumbers" argument is removed, as well as the _line method
+    Instead, a callable "format_line" argument allows full custom formatting (it 
+    takes a job, and returns the formatted line string.)
+  - The create* and __init__ methods got additional args, and the arg order changed
+    (best practice is using kwargs as all examples do, to be independent from the arg order).
+  - the "special" dict in the MsgJob can be empty but no more None (which was annoying)
+  - observers can be callables now (this is backwards compatible; the observer.observe()
+    method is still used when found.)
+
+
+0.1.4
+-----
+- Integration into the Python standard logging (as a Handler) added
+- new "seFilesExclude" parameter allows better readable stack logging by excluding files
+- API Changes:
+  -Archiving tool: parameter "problemCats" deprecated (is renamed to "cats" and defaults to None)
+  -the log.log() method is removed (log.log() was for
+   compatibility with pre - 0.1.0 versions only. It has never been documented in the manual.)
+
+
+0.1.3
+-----
+- Archiver is available for both text file and database logging
+- Archiver can rotate, analogous to the "normal" log
+- Unicode helper functions has been revised:
+  The lu2a* functions use the standard backslash style for 
+  non-ascii characters (e.g.\\xc4 instead of <196> which was HTML/XML-unfriendly.)
+  The max parameter of lu2a* limits the _result_ length now
+  (instead of limiting the ingoing unicode string, which was annoying 
+  when storing the result into fixed-length database fields.)
+- Incompatible API changes: 
+  - Archiver creation function is changed
+  (the old example code is still working but there's no full compatibility; see manual.)
+  - The "overwrite" parameter in the create* functions is named "drop"
+  now which defaults to True ("overwrite" may have suggested we overwrite existing files/tables
+  line by line which is not right.)
+  - Customizing DB Columns has slightly changed, see example in the manual.
+  
+  
+
+0.1.2
+-----
+- Problem Archiving Tool revised. Works without DB-read-operations now,
+  to reduce DB load in case of many error messages. Futher, it
+  allows better customization (see manual.)
+- The observe() method has changed. Mainly, it receives a job history
+  now instead of a single job.
+- A defined API to customize the output line format is available now.
+- The depth of logged stacktraces 
+  can be set in the createLocalLog methods now (stackMax parameter).
+- speed of Database Logging improved
+- The witless initial message ("Generated by...") is not written by default anymore
+
+0.1.1
+-----
+- Compatible with SQLAlchemy 0.4.0beta5
+  (SQLAlchemy 0.3.x is still supported)
+
+0.1.0 
+-----
+- First public release

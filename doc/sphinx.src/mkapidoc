@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+rm -f ./apidoc/*
+sphinx-apidoc -o ./apidoc/ ../../

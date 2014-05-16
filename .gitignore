@@ -1,0 +1,12 @@
+*.pyc
+*.pyo
+/dist/
+/doc/build/
+*.orig
+*.egg-info
+/lib3k/
+.project
+.pydevproject
+demo-*.txt
+demo-*.log
+demo-*.log.zip
