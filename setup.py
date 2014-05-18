@@ -21,7 +21,7 @@ def read(*filenames, **kwargs):
     return sep.join(buf)
    
 
-long_description = read('README.txt', 'doc/CHANGES.txt')
+long_description = read('README.md', 'doc/CHANGES.txt')
 
 
 class PyTest(TestCommand):
