@@ -10,6 +10,9 @@ This release completes the integration into standard logging, changes the projec
   - calls with standard logging did not translate the logging.LEVEL into a rrlog category (like "E") 
 - Features:
   - integration into standard logging supports now: separate arguments which are later merged into the message string
+- Removed:
+  - the lib3k directory (containing a generated Python3 version) is removed 
+    since the Python 2to3 tool succeeds now without tweaking.  
 
 
 0.3.0

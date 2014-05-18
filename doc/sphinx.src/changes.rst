@@ -6,4 +6,4 @@ Change History
 ************************
 
 
-.. literalinclude:: ../CHANGES.TXT
+.. literalinclude:: ../CHANGES.txt

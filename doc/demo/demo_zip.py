@@ -28,7 +28,7 @@
 
 """
 @summary:
-Demonstrates the basic usage.
+Pending feature "logfile zipping" is undocumented.
 @author: Ruben Reifenberg
 """
 
@@ -44,6 +44,7 @@ from rrlog.server import filewriter
 import zipfile
 import warnings
 
+# new with v0.3.1: zip a logfile. Experimental feature, undocumented !
 def zip(ev):
 	try:
 		f = zipfile.ZipFile(ev.filePath+".zip","w")

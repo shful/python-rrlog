@@ -6,6 +6,7 @@
 
 .. _SqlAlchemy: http://www.sqlalchemy.org
 .. _Sourceforge: http://sourceforge.net/projects/rrlog/
+.. _Github: https://github.com/shful/python-rrlog
 
 
 Manual for rrlog
@@ -17,7 +18,7 @@ Manual for rrlog
 
 ----
 
-Download from `Sourceforge`_ | :ref:`changes`
+Download from `Github`_ | `Sourceforge`_ | see :ref:`changes`
 
 
 
@@ -176,10 +177,6 @@ There's a wide version range expected to work:
 If some of these "supported versions" don't work, it is considered a bug. Please tell (:ref:`contact`)
 
 
-**Python 3**
-You may already try the experimental lib3k/ directory (instead of lib/). This is made by the 2to3 tool of Python.
-   
-
 .. _contact:
 
 Contact
@@ -194,7 +191,7 @@ Or see http://www.reifenberg.de/rrlog/ or the sourceforge site `Sourceforge`
 License (MIT)
 =======================
 
-.. literalinclude:: ../LICENSE.TXT
+.. literalinclude:: ../LICENSE.txt
 
 
 Indices and tables
