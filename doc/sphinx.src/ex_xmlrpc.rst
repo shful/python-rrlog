@@ -17,8 +17,8 @@ Most parameters are now found in the server create* function, e.g. the rotation 
 **Host and Ports**
 
 .. todo:module-level variables not auto-documented :-(
-By default, the connection uses "localhost" and a default port → :py:data:`rrlog.globalconst.DEFAULTPORT_XMLRPC`
 
+By default, the connection uses "localhost" and a default port → :py:data:`rrlog.globalconst.DEFAULTPORT_XMLRPC`
 You can specify 1..n ports on both sides. The server uses the first free port. The client uses the first port where a server seems available.  
 
 
