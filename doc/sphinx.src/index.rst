@@ -72,7 +72,7 @@ There are at least the following caveats:
 * It is designed and tested with a multi-process but not multithreaded application.
   Notice that nobody did care for a threaded environment yet. It *may* work threaded if you use the remote logging way.
   See :ref:`multithings`
-* rrlog still lives in the grey-bearded Python 2 world. There is an experimental Python 3 version (see :ref:`requirements`) but that wasn't in productive use yet.
+* rrlog still lives in the very grey-bearded Python 2 world. At the moment, you need to apply the 2to3 tool to tinker a Python 3 version (See :ref:`requirements`)
 
 **Major improvements likely to come next are:**
 
