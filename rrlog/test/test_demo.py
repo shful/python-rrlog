@@ -43,12 +43,12 @@ def demopath():
 	"""
 	p = os.path.abspath(__file__)
 	
-	# traverse up to the directory probably containing docs/
+	# traverse up to the directory probably containing doc/
 	for i in range(0,3):
 		p = os.path.split(p)[0]
 		
 	# check wheter doc/ really exists here
-	res = os.path.join(p, "docs") # package demo should be inside docs/
+	res = os.path.join(p, "doc") # package demo should be inside doc/
 	assert os.path.exists(res)
 	assert os.path.isdir(res)	
 	return res
@@ -213,7 +213,7 @@ def test_demo_logginghandler():
 	# right file content ?
 	def assert_(msgcount,lines,i):
 		s = (
-		"^\s*%d\.\[.+\]\s"%(i+1)
+		"^W \s*%d\.\[.+\]\s"%(i+1)
 		+"A warning via standard logging #%s"%(msgcount)
 		+regex_for_path("<module>", "demo_logginghandler", 69, "1,99", 1, omittedcxn="\<-\.\.\.<-")
 		)
