@@ -8,5 +8,8 @@ rrlog ist a pure Python logging library that supports instantly:
 * stackpath logging for comfortable debugging
 
 
-A HTML manual for the latest version is at:
+A HTML manual for the latest version is at both:
+http://python-rrlog.readthedocs.org/en/latest/
+
+and:
 http://www.reifenberg.de/rrlog/
