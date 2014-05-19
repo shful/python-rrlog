@@ -41,14 +41,14 @@ When the server is up again, all clients start to use the server again.
 
 
 
-socket servers
+Common server examples
 -----------------------
 
 For the socket client to make sense, start a log server in another process:
 
 
-A socket server for stdout
-----------------------------
+A socket server that prints to stdout
+---------------------------------------------
 
 
 .. literalinclude:: ../demo/demo_socketserverstdout.py
@@ -59,8 +59,8 @@ A socket server for stdout
 →  :py:mod:`rrlog.server.printwriter`
 
 
-A socket server for files
-------------------------------
+A socket server that logs into files
+------------------------------------------
 
 .. literalinclude:: ../demo/demo_socketserverfiles.py
    :lines: 42-
@@ -70,8 +70,8 @@ A socket server for files
 →  :py:mod:`rrlog.server.filewriter`
 
 
-A socket server for database tables
----------------------------------------
+A socket server that logs into a database
+-------------------------------------------
 
 .. literalinclude:: ../demo/demo_socketserverdatabase.py
    :lines: 42-
