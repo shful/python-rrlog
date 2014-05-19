@@ -92,6 +92,7 @@ Create a callable log object
 
    * the log message (str)
    * an optional "category", which is a single character. That "category" rawly corresponds with the "info","debug","warn"... levels of the standard logging.
+
    Example::
    
       log("Uuups!","E")
@@ -191,7 +192,7 @@ Or see http://www.reifenberg.de/rrlog/ or the sourceforge site `Sourceforge`
 License (MIT)
 =======================
 
-.. literalinclude:: ../LICENSE.txt
+.. literalinclude:: ../../LICENSE.txt
 
 
 Indices and tables
