@@ -57,7 +57,7 @@ def logSequence(lineCount=25, msg="msg<%d>", errorLines=(), drop=True, modifylog
 	rrlog.server.printwriter.print_ = ff.write
 	# now, log some lines:
 	for i in range(0,lineCount):
-		print "logging msg:%s,lineCount=%d"%(msg%(i),lineCount)
+		print("logging msg:%s,lineCount=%d"%(msg%(i),lineCount))
 		if i in errorLines:
 			log(msg%(i),"E")
 		else:
@@ -143,17 +143,17 @@ def test_format_line():
 class FakeFile(object):
 	@classmethod
 	def reset(cls):
-		print "[FF]:reset"
+		print("[FF]:reset")
 		cls.instances = []
 	instances = []
 	def __init__(self):
 		self.lines = []
 		self.__class__.instances.append(self)
-		print "new FakeFile %s"%(self)
+		print("new FakeFile %s"%(self))
 	def flush(self): pass
 	def close(self): pass
 	def write(self, line):
-		print "[FF]%s:write:%s"%(self,line)
+		print("[FF]%s:write:%s"%(self,line))
 		self.lines.append(line)
 	def __repr__(self): return "FakeFile%d[%d lines]"%(id(self),len(self.lines))
 

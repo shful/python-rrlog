@@ -35,10 +35,10 @@ try:
 except ImportError:
 	try:
 		import json as json
-	except ImportError,e:
+	except ImportError as e:
 		try:
 			from rrlog import fbsimplejson as json # fallback json version, packaged here.
-		except ImportError,e:
+		except ImportError as e:
 			raise EnvironmentError(
 				"""%(m)s:No json or simplejson library was found.\n
 				json is core library since Python 2.6; earlier versions need separate json installation.

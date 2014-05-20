@@ -31,7 +31,7 @@ Use it when the performance is good enough for you.
 import pickle
 from rrlog import globalconst
 #todo: rename -> xmlrpcserver; Keep package xmlrpc as transition package
-from SimpleXMLRPCServer import SimpleXMLRPCServer
+from xmlrpc.server import SimpleXMLRPCServer
 
 
 
@@ -50,11 +50,11 @@ class LogAdapter(object):
 		"""
 		try:
 			logdata = pickle.loads(logdata_ps.data)
-		except Exception,e:
+		except Exception as e:
 			return "invalid pickle data:"+str(e)
 		try:
 			self.s.log(logdata)
-		except Exception,e:
+		except Exception as e:
 			return "log failed:"+str(e)
 		return ""
 		
@@ -84,8 +84,8 @@ def createSimpleXMLRPCServer(host, ports):
 	for port in ports:
 		try:
 			res = SimpleXMLRPCServer((host,port))
-		except Exception, e:
-			print "Retrying:%s"%(e)
+		except Exception as e:
+			print("Retrying:%s"%(e))
 		else:
 			res.logRequests = 0 # hint from newsgroup to disable the  - - [13/Apr/2007 13:33:57] "POST /RPC2 HTTP/1.0" 200 - output with every request
 			return res
@@ -99,7 +99,7 @@ def startServer(logServer, host="localhost", ports=(globalconst.DEFAULTPORT_XMLR
 	"""
 	# v0.3.0: The order of host,ports has changed for consistency
 	# warn:
-	if type(host) in (tuple,list) or type(ports) in (str,unicode):
+	if type(host) in (tuple,list) or type(ports) in (str,str):
 		msg = "Unexpected host or ports type. Note: The argument order in startServer has changed. Use host,ports now instead of ports,host. That has been inconsistent before (sorry)"
 		warnings.warn(msg)
 		raise TypeError(msg)
@@ -108,5 +108,5 @@ def startServer(logServer, host="localhost", ports=(globalconst.DEFAULTPORT_XMLR
 	adapter = LogAdapter(logServer)
 	server.register_function(adapter.log, "log")
 	server.register_function(adapter.addClient, "addClient")
-	if readyMsg: print "log server ready. Available at host,port: %s"%(str(server.server_address))
+	if readyMsg: print("log server ready. Available at host,port: %s"%(str(server.server_address)))
 	server.serve_forever()

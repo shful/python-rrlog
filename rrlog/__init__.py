@@ -62,8 +62,8 @@ class StdoutErrorHandler(object):
 	the printout may appear in the web page.
 	"""
 	def handleException(self, e):
-		print "Logging Error: %s"%(e)
-		print traceToShortStr()
+		print("Logging Error: %s"%(e))
+		print(traceToShortStr())
 
 
 class StderrErrorHandler(object):
@@ -258,7 +258,7 @@ class Log(object):
 			
 		try:
 			ospid = os.getpid() # need to get it always. When saving it, a process could fork me after that.
-		except Exception,e:
+		except Exception as e:
 			import warnings
 			warnings.warn("log: could not obtain process id from your operating system. You'll see -1 there.")
 			ospid = -1
@@ -370,7 +370,7 @@ class Log(object):
 		
 		try:
 			self._server.log(sd)
-		except Exception,e:
+		except Exception as e:
 			if self._errorHandler is not None:
 				self._errorHandler.handleException(e)
 			else:

@@ -46,7 +46,7 @@ class Checker(object):
 		
 	def __call__(self, jobhist, writer):
 		job = jobhist[-1]
-		print "__call__ %s in %d.%s"%(job.msg, self.i, self.__class__.__name__)
+		print("__call__ %s in %d.%s"%(job.msg, self.i, self.__class__.__name__))
 		assert job.msg == self.expected_msgs[self.i]		
 		self.i += 1
 		if self.raiseon == job.msg:
@@ -61,7 +61,7 @@ class LegacyObserver(Checker):
 		assert False, "expected observe() to be called"
 		
 	def observe(self, *args, **kwargs):
-		print "observe called"
+		print("observe called")
 		Checker.__call__(self, *args, **kwargs)
 	
 def format_line(job):
@@ -79,7 +79,7 @@ def test_observers():
 		kwargs={"observers":checkers}
 		)
 	for i,checker in enumerate(checkers):
-		print "checker %d finished?"%(i)
+		print("checker %d finished?"%(i))
 		checker.assert_finished()
 	fs = FakeFile.instances
 	assert len(fs) == 1 # old 2
@@ -124,7 +124,7 @@ def test_filters():
 		kwargs={"filters":checkers}
 		)
 	for i,checker in enumerate(checkers):
-		print "checker %d finished?"%(i)
+		print("checker %d finished?"%(i))
 		checker.assert_finished()
 	fs = FakeFile.instances
 	assert len(fs) == 1 # old 2

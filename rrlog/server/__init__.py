@@ -29,6 +29,7 @@ from sys import stderr
 from datetime import datetime
 from rrlog.tool import mStrftime,ListRotator,traceToShortStr
 from rrlog.globalconst import warn
+import collections
 
 EMPTYDICT = {}
 
@@ -168,7 +169,7 @@ class MsgJob(object):
 
 	
 	def __str__(self):
-		return u"{}-{}-{}".format(
+		return "{}-{}-{}".format(
 			self.__class__.__name__,
 			self.cat,
 			self.msg[:18],
@@ -197,7 +198,9 @@ class RotateWriterFactory(object):
 		if len(history) >= self._configs.len():
 			history.pop(0)
 		
-		return self._writerFactory(self._configs.next())
+		return self._writerFactory(
+			self._configs.__next__()
+			)
 
 
 class RotateLogWriter(object):
@@ -313,10 +316,10 @@ class LogServer(object):
 		# BEGIN compatibility with v <= 0.1.4: Accept observers with observe() instead __call__(), too:
 		self._observers = []		
 		for i,x in enumerate(observers):
-			if hasattr(x,"observe") and callable(x.observe):
+			if hasattr(x,"observe") and isinstance(x.observe, collections.Callable):
 				self._observers.append(x.observe)
 			else:
-				assert callable(x),"Observer %s must be callable (or need to have the deprecated observe() method)."%(x)
+				assert isinstance(x, collections.Callable),"Observer %s must be callable (or need to have the deprecated observe() method)."%(x)
 				self._observers.append(x)
 		# END compatibility with v <= 0.1.4
 
@@ -324,7 +327,7 @@ class LogServer(object):
 			assert observers.count(x)==1, "%s is >1 times in observers list"%(x)
 
 		for i,x in enumerate(filters):
-			assert callable(x),"Filter %s must be callable."%(x)
+			assert isinstance(x, collections.Callable),"Filter %s must be callable."%(x)
 			assert filters.count(x)==1, "%s is >1 times in filters list"%(x)
 
 
@@ -349,10 +352,10 @@ class LogServer(object):
 		if observer in self._observers:
 			raise ObserverAlreadyAdded("already added: %s"%(observer))
 		
-		if hasattr(observer,"observe") and callable(observer.observe):
+		if hasattr(observer,"observe") and isinstance(observer.observe, collections.Callable):
 			self._observers.append(observer.observe)
 		else:
-			assert callable(observer),"Observer %s must be callable (or need to have the deprecated observe() method)."%(observer)
+			assert isinstance(observer, collections.Callable),"Observer %s must be callable (or need to have the deprecated observe() method)."%(observer)
 			self._observers.append(observer)
 
 
@@ -468,7 +471,7 @@ class LogServer(object):
 		for i,observer in enumerate(self._observers):
 			try:
 				observer(jobhist=self._jobhist, writer=self._writer)
-			except Exception,e:
+			except Exception as e:
 				warn("observer %d:%s failed with %s, LogRecord was: %s. Trace=%s"%(
 					i,observer,
 					e,

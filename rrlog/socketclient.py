@@ -48,7 +48,7 @@ class _SocketHandler(handlers.SocketHandler):
 #        s = pickle.dumps(record.__dict__, 1)
 		try:
 			s = remotedumps(record)
-		except Exception,e:
+		except Exception as e:
 			raise SerializeError(""""serialize log data: %s failed with:%s.\n
 				A possible reason is the usage of json or similar library (e.g. marshal)
 				which cannot serialize custom objects. Use basic datatypes (mubers,strings,containertypes) in this case,
@@ -129,8 +129,8 @@ if __name__ == "__main__":
 	# an unformatted pickle
 	rootLogger.addHandler(socketHandler)
 
-	print "send..."
+	print("send...")
 	for i in range(0,10000):
 		rootLogger.info("Das Pferd frisst...")
 		rootLogger.info("...keinen Gurkensalat.")
-	print  "...send done."
+	print("...send done.")

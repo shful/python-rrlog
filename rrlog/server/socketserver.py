@@ -28,7 +28,7 @@ use the specified module variables to regularly end it without log line loss, or
 
 import sys
 import logging.handlers
-import SocketServer
+import socketserver
 import struct
 import threading
 import collections
@@ -71,7 +71,7 @@ def processq():
 		else:
 			try:
 				jobdata = remoteloads(pickled)
-			except Exception,e:
+			except Exception as e:
 				# no exit. there may be a process sending erroneously to me
 				warn("serialization protocol error: deserialize jobdata failed; a job is skipped (%s)"%e)
 			else:
@@ -82,7 +82,7 @@ def processq():
 					rrlog_server.log(jobdata)
 
 
-class LogRecordStreamHandler(SocketServer.StreamRequestHandler):
+class LogRecordStreamHandler(socketserver.StreamRequestHandler):
 	"""Handler for a streaming logging request.
 
 	This basically logs the record using whatever logging policy is
@@ -131,7 +131,7 @@ class LogRecordStreamHandler(SocketServer.StreamRequestHandler):
 # there is also SocketServer.ThreadingTCPServer
 # but should a log really load multiple cpu cores ?
 # moreover, that would require the rotation to be threadsafe
-tcpservercls = SocketServer.TCPServer
+tcpservercls = socketserver.TCPServer
 
 
 class LogRecordSocketReceiver(tcpservercls):
@@ -145,7 +145,7 @@ class LogRecordSocketReceiver(tcpservercls):
 		for port in ports:
 			try:
 				tcpservercls.__init__(self, (host, port), handler)
-			except socket.error,e:
+			except socket.error as e:
 				warn("port %s not available:%s"%(port, e))
 				port = None
 				
@@ -195,12 +195,12 @@ def startServer(logServer, host="localhost", ports=(globalconst.DEFAULTPORT_SOCK
 	import os
 	t = threading.Thread(target=processq)	
 	t.start()
-	print "%s:log server ready. Available at host,port: %s.Pid=%s, thread.ident=%s"%(
+	print("%s:log server ready. Available at host,port: %s.Pid=%s, thread.ident=%s"%(
 		datetime.datetime.now(),
 		str( (socketreceiver.host, socketreceiver.port)),		
 		os.getpid(),
 		t.ident
-		)
+		))
 	
 	socketreceiver.serve_until_stopped()
 

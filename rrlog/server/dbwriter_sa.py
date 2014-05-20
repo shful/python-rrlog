@@ -279,8 +279,8 @@ class DBLogWriter(object):
 				else:
 					kwargs = {}
 				res.append( Column(x[0],x[1],**kwargs) )
-		except Exception,e:
-			print "colsConfig was:%s"%(str(colsConfig))
+		except Exception as e:
+			print("colsConfig was:%s"%(str(colsConfig)))
 			raise
 		return res
 	createColumns = staticmethod(createColumns)

@@ -26,7 +26,7 @@ The client (i.e.application) side of an XMLRPC log connection.
 """
 
 import pickle
-from xmlrpclib import ServerProxy, Error, Binary
+from xmlrpc.client import ServerProxy, Error, Binary
 
 import rrlog
 from rrlog import globalconst
@@ -61,7 +61,7 @@ def loglog(msg, cat=""):
 	Here does the log logging itself.
 	"""
 	pass
-	print "log:%s %s"%(cat,msg)#todo:weg
+	print("log:%s %s"%(cat,msg))#todo:weg
 
 
 def connect(host, ports):
@@ -83,7 +83,7 @@ def connect(host, ports):
 		
 		try:
 			server.addClient()
-		except Exception,e:
+		except Exception as e:
 			loglog("Connect: no server at port%s:%s"%(port, e))
 		else:
 			loglog("Found server at %s/%s"%(host, port))
@@ -117,7 +117,7 @@ class LogServerProxy(object):
 			ok = self.server.log(
 				Binary(pickle.dumps(logdata))
 				)
-		except Exception, e:
+		except Exception as e:
 			raise XMLRPCConnectionException("%s"%(e),msgid=logdata[0])
 		else:
 			if ok != "":

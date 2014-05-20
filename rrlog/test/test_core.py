@@ -75,7 +75,7 @@ class _TestLogWriter(object):
 			assert job.cfn() is None,"cfn was %s."%(job.cfn())
 			assert job.cln()==-1,"cln was %s"%(job.cln())
 		if self.stackCheckLimit>=1:
-			print "CFN = %s, path=%s."%(job.cfn(), job.path)
+			print("CFN = %s, path=%s."%(job.cfn(), job.path))
 			assert self.fnMatch.match(job.cfn()) is not None,"cfn was %s,%s"%(job.cfn(),type(job.cfn()))
 			if clnExpected >=0:
 				assert job.cln()==clnExpected,"cln was %s not %s"%(job.cln(),clnExpected)
@@ -113,7 +113,7 @@ class TestLogAndServer(object):
 		self.l = Log(server=self.s, stackMax=4)
 		self.s._cfnMode=self.s.CFN_SHORT
 		self.w.fnMatch=re.compile("^"+thisfname()+"$")
-		print "name=%s"%(__name__)
+		print("name=%s"%(__name__))
 		self.log("msg1",cat="T")
 
 	def _test2(self):
@@ -169,7 +169,7 @@ class TestLogAndServer(object):
 		self.w.thisfnameOccurrences=(4,777) # because seFilesExclude excludes nothing
 		self.s._cfnMode=self.s.CFN_SHORT
 		self.w.fnMatch=re.compile("^"+thisfname()+"$")
-		print "name=%s"%(__name__)
+		print("name=%s"%(__name__))
 		self.log("msg1",cat="T")
 
 
@@ -187,7 +187,7 @@ class TestLogAndServer(object):
 		self.w.clnExpected = -1
 #		self.w.fnMatch=re.compile("^"+__name__.split(".")[-1]+"$") #since 0.2.1,even the clf/cfn is excluded by seFilesExclude:this file should not appear anymore in the path
 		self.w.fnMatch=re.compile("^.*[^"+thisfname()+"].*$") #anything but my filename
-		print "name=%s"%(__name__)
+		print("name=%s"%(__name__))
 		self.log("msg1",cat="T")
 
 	def test_traceOffset(self):
@@ -200,7 +200,7 @@ class TestLogAndServer(object):
 		self.w.fnMatch=re.compile("^"+thisfname()+"$")
 		self.w.clnExpected=LINE_Y # because traceOffset, line-x is omitted
 		self.w.stackCheckLimit=1 # don't check path[1] (usually, with no traceOffset, it is line-y) 
-		print "name=%s"%(__name__)
+		print("name=%s"%(__name__))
 		self.log("msg1",cat="T")
 
 		# 2. invalid, huge traceOffset

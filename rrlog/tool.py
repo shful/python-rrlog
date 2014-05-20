@@ -41,7 +41,7 @@ class ListRotator(object):
 		self.list = list
 		self.i = -1
 
-	def next(self):
+	def __next__(self):
 		"""
 		Not threadsafe.
 		:returns: next list element, rotating
@@ -74,73 +74,74 @@ def _cutcount(l, max):
 			cdl+=1
 
 
-def lu2a(unistr, max=50, errorstr="~~~"):
-	"""
-	Limited Unicode To Ascii (limited: the result length is limited)
-	Intended for ASCII-logging of untrusted (e.g.user input) unicode strings.
-	The length limitation is intended for storage in length-limited ASCII Database fields.
-	:rtype: ASCII str or None
-	:returns: The argument but with: All non-ascii chars replaced by "\\xhexvalue".
-	If N chars (of the result string) are thrown away, "[N+]" is appened at the end.
-	:param unistr: Python Unicode or None
-	:param max: >=3, length limit of the RESULT STRING (default 50)
-	:param errorstr: Returned in case max is too low to return the regular result.
-	"""
-	assert max >= 3
-	if unistr is None: return None
-	res = unistr.encode("ascii","backslashreplace")
-	if len(res)>max:
-		cutcount = _cutcount(len(res),max-3) #3 because "[+]"
-		if cutcount<=len(res):
-			res = "%s[%d+]"%(res[:-cutcount],cutcount)
-		else:
-			#max is too low to display even the count of cut chars
-			res = errorstr
-	return res
+# 
+# def lu2a(unistr, max=50, errorstr="~~~"):
+# 	"""
+# 	Limited Unicode To Ascii (limited: the result length is limited)
+# 	Intended for ASCII-logging of untrusted (e.g.user input) unicode strings.
+# 	The length limitation is intended for storage in length-limited ASCII Database fields.
+# 	:rtype: ASCII str or None
+# 	:returns: The argument but with: All non-ascii chars replaced by "\\xhexvalue".
+# 	If N chars (of the result string) are thrown away, "[N+]" is appened at the end.
+# 	:param unistr: Python Unicode or None
+# 	:param max: >=3, length limit of the RESULT STRING (default 50)
+# 	:param errorstr: Returned in case max is too low to return the regular result.
+# 	"""
+# 	assert max >= 3
+# 	if unistr is None: return None
+# 	res = unistr.encode("ascii","backslashreplace")
+# 	if len(res)>max:
+# 		cutcount = _cutcount(len(res),max-3) #3 because "[+]"
+# 		if cutcount<=len(res):
+# 			res = "%s[%d+]"%(res[:-cutcount],cutcount)
+# 		else:
+# 			#max is too low to display even the count of cut chars
+# 			res = errorstr
+# 	return res
 
 
-def lu2a_de(unistr, max=50, errorstr="~~~"):
-	"""
-	Note: In case of unistr containing non-ascii characters, this method
-	gets slow (because it does a python loop over each character.)
-	@see: lu2a
-	Additionally, the german umlauts are replaced by AE,OE...
-	to make it more readable (by the drawback of information loss, of course.)
-	"""
-	assert max >= 3
-	if unistr is None: return None
-	try:
-		# fastest if possible
-		res = unistr.encode("ascii")
-	except UnicodeError:
-		# slow.
-		# Could be faster. But this wants to be is a side effect free library
-		# and we don't want to register a callback handler in codecs globally.
-		res = ""
-		for char in unistr: #don't care for speed. Assume this is seldom.
-			try:
-				res += char.encode("ascii")
-			except UnicodeError:
-				try:
-					res += {
-						u"\u00e4":"ae",
-						u"\u00f6":"oe",
-						u"\u00fc":"ue",
-						u"\u00c4":"AE",
-						u"\u00d6":"OE",
-						u"\u00dc":"UE",
-						u"\u00df":"ss",
-						}[char]
-				except KeyError:
-					res += char.encode("ascii","backslashreplace") #"<%d>"%(ord(char))
-	if len(res)>max:
-		cutcount = _cutcount(len(res),max-3) #3 because "[+]"
-		if cutcount<=len(res):
-			res = "%s[%d+]"%(res[:-cutcount],cutcount)
-		else:
-			#max is too low to display even the count of cut chars
-			res = errorstr
-	return res
+# def lu2a_de(unistr, max=50, errorstr="~~~"):
+# 	"""
+# 	Note: In case of unistr containing non-ascii characters, this method
+# 	gets slow (because it does a python loop over each character.)
+# 	@see: lu2a
+# 	Additionally, the german umlauts are replaced by AE,OE...
+# 	to make it more readable (by the drawback of information loss, of course.)
+# 	"""
+# 	assert max >= 3
+# 	if unistr is None: return None
+# 	try:
+# 		# fastest if possible
+# 		res = unistr.encode("ascii")
+# 	except UnicodeError:
+# 		# slow.
+# 		# Could be faster. But this wants to be is a side effect free library
+# 		# and we don't want to register a callback handler in codecs globally.
+# 		res = ""
+# 		for char in unistr: #don't care for speed. Assume this is seldom.
+# 			try:
+# 				res += char.encode("ascii")
+# 			except UnicodeError:
+# 				try:
+# 					res += {
+# 						"\u00e4":"ae",
+# 						"\u00f6":"oe",
+# 						"\u00fc":"ue",
+# 						"\u00c4":"AE",
+# 						"\u00d6":"OE",
+# 						"\u00dc":"UE",
+# 						"\u00df":"ss",
+# 						}[char]
+# 				except KeyError:
+# 					res += char.encode("ascii","backslashreplace") #"<%d>"%(ord(char))
+# 	if len(res)>max:
+# 		cutcount = _cutcount(len(res),max-3) #3 because "[+]"
+# 		if cutcount<=len(res):
+# 			res = "%s[%d+]"%(res[:-cutcount],cutcount)
+# 		else:
+# 			#max is too low to display even the count of cut chars
+# 			res = errorstr
+# 	return res
 
 
 def mStrftime(dt, formatStr):
@@ -283,11 +284,11 @@ def mail_smtp(server,serverpw,to_address,from_address,loginuser,subject,content,
 		e,f,g = sys.exc_info()
 		msg = "ERROR sendmail:%s,%s"%(e,f)
 		sys.stderr.write(msg)
-		msg = u"ERROR sendmail; server=%s, from=%s, to=%s"%(server, from_address, to_address)
+		msg = "ERROR sendmail; server=%s, from=%s, to=%s"%(server, from_address, to_address)
 		sys.stderr.write(msg.encode("ascii","backslashreplace"))
 		
 	try:
 		server.quit()
 	except:
 		e,f,g = sys.exc_info()
-		print "ERROR quit:%s,%s"%(e,f)
+		print("ERROR quit:%s,%s"%(e,f))

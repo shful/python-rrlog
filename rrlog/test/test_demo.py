@@ -60,7 +60,7 @@ def setup():
 	append it 
 	"""
 	sys.path.append(demopath())
-	print demopath(),"exists?",os.path.exists(demopath())
+	print(demopath(),"exists?",os.path.exists(demopath()))
 
 
 def teardown():
@@ -73,12 +73,12 @@ class OpenFF(object):
 	"""
 	def __init__(self):
 		self.d = {}
-		print "OpenFFs %d, %s created"%(id(self),self)
+		print("OpenFFs %d, %s created"%(id(self),self))
 	def __call__(self,path, flag):
 		from rrlog.test.test_filewriter import FakeFile
 		ff = FakeFile(config=path)
 		self.d[path] = ff
-		print "OpenFF %d : FF added->%s"%(id(self),self.d)
+		print("OpenFF %d : FF added->%s"%(id(self),self.d))
 		return ff
 	def ff_by_suffix(self, suffix):
 		"""
@@ -86,7 +86,7 @@ class OpenFF(object):
 		:returns: the only item where key ends with suffix
 		"""		
 		res = None
-		for k,v in self.d.items():
+		for k,v in list(self.d.items()):
 			if k.endswith(suffix):
 				assert res is None
 				res = v
@@ -114,7 +114,7 @@ def test_demo_customlinefiles():
 	"""
 	import rrlog.server.filewriter
 	ffs = OpenFF()
-	print "open->%s"%(ffs)
+	print("open->%s"%(ffs))
 	oldopen = rrlog.server.filewriter.open_
 	rrlog.server.filewriter.open_ = ffs
 	
@@ -156,10 +156,10 @@ def test_demo_indentfiles():
 	assert len(ffs.d) == 1
 	lines = ffs.ff_by_suffix("").lines
 	
-	print "-----------------"
+	print("-----------------")
 	for l in lines:
-		print l
-	print "-----------------"
+		print(l)
+	print("-----------------")
 
 	s = (
 	"^  1\.\[.+\] begin"
@@ -203,7 +203,7 @@ def test_demo_indentstdout():
 def test_demo_logginghandler():
 	import rrlog.server.filewriter
 	ffs = OpenFF()
-	print "open->%s"%(ffs)
+	print("open->%s"%(ffs))
 	oldopen = rrlog.server.filewriter.open_
 	rrlog.server.filewriter.open_ = ffs
 
@@ -223,10 +223,10 @@ def test_demo_logginghandler():
 		
 	ff = ffs.ff_by_suffix("-0.txt")
 	
- 	print "-----------------"
+ 	print("-----------------")
 	for l in ff.lines:
-		print l
-	print "-----------------"
+		print(l)
+	print("-----------------")
 	
 	assert len(ff.lines)==7
 	assert_(0,ff.lines,0)
@@ -243,10 +243,10 @@ def test_demo_stdout():
 	
 	from demo import demo_stdout
 
-	print "--------------------------"
+	print("--------------------------")
 	for i,l in enumerate(ff.lines):
-		print l
-	print "--------------------------"
+		print(l)
+	print("--------------------------")
 	
 	for i,l in enumerate(ff.lines):
 		assert l.rstrip()[l.index("Dear"):] == "Dear log reader, this is line #%s :::<module> |demo_stdout(48)"%(i)
@@ -257,7 +257,7 @@ def test_demo_stdout():
 def test_demo_files():
 	import rrlog.server.filewriter
 	ffs = OpenFF()
-	print "open->%s"%(ffs)
+	print("open->%s"%(ffs))
 	oldopen = rrlog.server.filewriter.open_
 	rrlog.server.filewriter.open_ = ffs
 

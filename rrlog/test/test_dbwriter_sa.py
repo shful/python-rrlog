@@ -46,9 +46,9 @@ engineStr = "mysql://logtester@localhost/logtest"
 from sqlalchemy import create_engine
 try:
 	from sqlalchemy import __version__
-	print __version__
+	print(__version__)
 except ImportError:
-	print "very old SqlAlchemy ?"
+	print("very old SqlAlchemy ?")
 
 
 def logTables(log):

@@ -59,7 +59,7 @@ def logSequence(rotateCount=3, rotateLineMin=10, lineCount=25, msg="msg<%d>", ob
 
 	# now, log some lines:
 	for i in range(0,lineCount):
-		print "logging msg:%s,lineCount=%d"%(msg%(i),lineCount)
+		print("logging msg:%s,lineCount=%d"%(msg%(i),lineCount))
 		if i in errorLines:
 			log(msg%(i),"E")
 		else:
@@ -202,13 +202,13 @@ class FakeFile(object):
 		cls.instances = []
 	instances = []
 	def __init__(self, config):
-		print "new FakeFile:%s"%(config)
+		print("new FakeFile:%s"%(config))
 		self.lines = []
 		self.__class__.instances.append( (config,self) )
 	def flush(self): pass
 	def close(self): pass
 	def write(self, line):
-		print "%s:Append line:%s"%(self,line)
+		print("%s:Append line:%s"%(self,line))
 		self.lines.append(line)
 	def __repr__(self): return "FakeFile[%d lines]"%(len(self.lines))
 
@@ -217,7 +217,7 @@ class FakeFileLogWriter(FileLogWriter):
 	"""
 	"""
 	def _createFile(self):
-		print "================> test_filewriter: make FakeFile"
+		print("================> test_filewriter: make FakeFile")
 		self._logfile = FakeFile(self._config)
 
 

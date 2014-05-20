@@ -59,6 +59,6 @@ def run(srcfile, k=None):
 if __name__ == "__main__":
 	import os
 	for (dirpath,dirnames,filenames) in os.walk("./"):
-		for filename in filter(lambda x:x.startswith("test") and x.endswith(".py"), filenames):
-			print "::::::: CALLING test of file %s :::::::"%(filename)
+		for filename in [x for x in filenames if x.startswith("test") and x.endswith(".py")]:
+			print("::::::: CALLING test of file %s :::::::"%(filename))
 			run(filename)

@@ -25,7 +25,10 @@ logging into text files.
 """
 
 import os.path
-import thread
+try:
+	import _thread
+except ImportError: # Py3Migration
+	import thread as _thread
 import warnings
 from rrlog import Log
 from rrlog import server
@@ -266,10 +269,10 @@ class FileLogWriter(textwriter.TextlineLogWriter):
 			else:
 				return "no file"
 			
-		return u"{}-{}-{}".format(
+		return "{}-{}-{}".format(
 			self.__class__.__name__,
 			fname(),
-			thread.get_ident()
+			_thread.get_ident()
 			).encode("ascii","backslashreplace")
 
 	

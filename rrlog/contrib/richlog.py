@@ -83,5 +83,5 @@ class RichLog1(object):
 		:param message: Optional log message e.g. to identify the dict
 		"""
 		self.wrapped("%s,dict:"%(message))
-		for i,(k,v) in enumerate(aDict.items()):
+		for i,(k,v) in enumerate(list(aDict.items())):
 			self.wrapped("[%s] %s:%s"%(i,k,v))

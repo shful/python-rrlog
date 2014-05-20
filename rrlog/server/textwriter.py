@@ -35,7 +35,7 @@ def tm_structconverter(secs, to_structtime=time.localtime):
 		where struct_time is a tuple as returned by time.localtime,
 		milliseconds is an int >=0 and <1000
 	"""	
-	msecs = long((secs%1)*1000) # no rounding, cut digits after 3rd:
+	msecs = int((secs%1)*1000) # no rounding, cut digits after 3rd:
 	return to_structtime(secs),msecs
 
 
