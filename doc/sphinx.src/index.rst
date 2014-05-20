@@ -183,7 +183,7 @@ Bug reports, improvements ...
 
 Mail to rrlog at reifenberg.de
 
-Or see http://www.reifenberg.de/rrlog/ or the sourceforge site `Sourceforge`
+Or see http://www.reifenberg.de/rrlog/ or the `Github`_ site
 
 
 License (MIT)
