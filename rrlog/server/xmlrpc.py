@@ -31,8 +31,12 @@ Use it when the performance is good enough for you.
 import pickle
 from rrlog import globalconst
 #todo: rename -> xmlrpcserver; Keep package xmlrpc as transition package
-from xmlrpc.server import SimpleXMLRPCServer
-
+try:
+	#Py3:from xmlrpc.server import SimpleXMLRPCServer
+	#Py2:from SimpleXMLRPCServer import SimpleXMLRPCServer
+	from xmlrpc import server as xserver
+except ImportError:
+	import SimpleXMLRPCServer as xserver
 
 
 class LogAdapter(object):
@@ -83,7 +87,7 @@ def createSimpleXMLRPCServer(host, ports):
 	"""
 	for port in ports:
 		try:
-			res = SimpleXMLRPCServer((host,port))
+			res = xserver.SimpleXMLRPCServer((host,port))
 		except Exception as e:
 			print("Retrying:%s"%(e))
 		else:

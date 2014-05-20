@@ -26,8 +26,13 @@ The client (i.e.application) side of an XMLRPC log connection.
 """
 
 import pickle
-from xmlrpc.client import ServerProxy, Error, Binary
-
+try: 
+	#Py3: from xmlrpc.client import ServerProxy, Error, Binary
+	#Py2: from xmlrpclib import ServerProxy, Error, Binary
+	from xmlrpc	import client as xclient
+except ImportError:
+	import xmlrpclib as xclient
+	
 import rrlog
 from rrlog import globalconst
 
@@ -79,7 +84,7 @@ def connect(host, ports):
 	=> No timeout solution currently.
 	"""
 	for port in ports:
-		server = ServerProxy("http://%s:%s"%(host,port))
+		server = xclient.ServerProxy("http://%s:%s"%(host,port))
 		
 		try:
 			server.addClient()
@@ -115,7 +120,7 @@ class LogServerProxy(object):
 		
 		try:
 			ok = self.server.log(
-				Binary(pickle.dumps(logdata))
+				xclient.Binary(pickle.dumps(logdata))
 				)
 		except Exception as e:
 			raise XMLRPCConnectionException("%s"%(e),msgid=logdata[0])
