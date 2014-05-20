@@ -67,17 +67,14 @@ Database logging needs the `SqlAlchemy`_ package.
 
 **Where it sucks**
 
-There are at least the following caveats:
-
-* It is designed and tested with a multi-process but not multithreaded application.
-  Notice that nobody did care for a threaded environment yet. It *may* work threaded if you use the remote logging way.
+* It is designed for and tested with a multi-process but not multithreaded application.
+  Notice that nobody did care for a threaded environment yet. It *should* work threaded with remote logging.
   See :ref:`multithings`
-* rrlog still lives in the very grey-bearded Python 2 world. At the moment, you need to apply the 2to3 tool to tinker a Python 3 version (See :ref:`requirements`)
 
 **Major improvements likely to come next are:**
 
 * The rotation is triggered by the number of logged messages only. A time/date-triggered rotation is missing
-* only ASCII logging is specified. Unicode messages should be standard with Python3.
+* only ASCII logging is specified. Unicode messages should become standard with Python3.
 
 
 Basic usage
@@ -165,7 +162,7 @@ When using database logging, the SQLAlchemy library is required. File logging ne
 
 Tested environment:
 
-* Python 2.7 on 64Bit Linux
+* CPython 2.7 on 64Bit Linux
 * SQLAlchemy 0.8.1
 
 Only this environment is tested.
@@ -173,7 +170,7 @@ rrlog supports a wide range of Python and SQLAlchemy versions, to minimize depen
 There's a wide version range expected to work:
 
 * SQLAlchemy: all >= 0.3.2
-* Python: all from 2.4 to 2.7.
+* Python: from 2.7 to 3.4 (current)
 
 If some of these "supported versions" don't work, it is considered a bug. Please tell (:ref:`contact`)
 
