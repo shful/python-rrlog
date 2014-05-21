@@ -27,7 +27,7 @@ rrlog - a Rotating Remote LOG.
 @author: Ruben Reifenberg
 """
 
-__version__="0.3.1"
+__version__="0.3.2testing"
 
 import os
 import sys
