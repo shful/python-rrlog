@@ -25,10 +25,13 @@ To stop the threaded server process (Ctrl-C prbably won't work)
 use the specified module variables to regularly end it without log line loss, or kill the process.
 """
 
-
+from __future__ import absolute_import # Py3Migration - required by Python 2.7 for socketserver import
 import sys
 import logging.handlers
-import socketserver
+try:
+	import socketserver as py_socketserver
+except ImportError: # Py3Migration
+	import SocketServer as py_socketserver
 import struct
 import threading
 import collections
@@ -82,7 +85,8 @@ def processq():
 					rrlog_server.log(jobdata)
 
 
-class LogRecordStreamHandler(socketserver.StreamRequestHandler):
+print dir(py_socketserver)
+class LogRecordStreamHandler(py_socketserver.StreamRequestHandler):
 	"""Handler for a streaming logging request.
 
 	This basically logs the record using whatever logging policy is
@@ -131,7 +135,7 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
 # there is also SocketServer.ThreadingTCPServer
 # but should a log really load multiple cpu cores ?
 # moreover, that would require the rotation to be threadsafe
-tcpservercls = socketserver.TCPServer
+tcpservercls = py_socketserver.TCPServer
 
 
 class LogRecordSocketReceiver(tcpservercls):
