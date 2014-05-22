@@ -85,7 +85,6 @@ def processq():
 					rrlog_server.log(jobdata)
 
 
-print dir(py_socketserver)
 class LogRecordStreamHandler(py_socketserver.StreamRequestHandler):
 	"""Handler for a streaming logging request.
 
