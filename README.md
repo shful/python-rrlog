@@ -1,3 +1,6 @@
+DEPRECATED - I do not maintain that anymore. python-rrlog is still used as-it-is in some Python 2 websites, but it even won't make the transition to Python 3.
+--
+
 rrlog ist a pure Python logging library that supports instantly:
 
 
